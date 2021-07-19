@@ -24,11 +24,13 @@ export enum CellContentEnum {
 export interface GameCellProps {
   content: CellContentEnum;
   isHidden?: boolean;
+  onClick: () => {};
 }
 
-const GameCell = ({ content, isHidden }: GameCellProps) => {
+const GameCell = ({ content, isHidden, onClick }: GameCellProps) => {
   return (
     <GameCellStyled
+      onClick={onClick}
       isHidden={isHidden}
       className="w-5 h-5 border border-gray-800"
     />
