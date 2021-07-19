@@ -1,21 +1,25 @@
 import React from "react";
-import GameCell from "./GameCell";
+import GameCell, { CellContentEnum } from "./GameCell";
 
-const GameBoard = () => {
+export type CellLayout = {
+  content: CellContentEnum;
+  isHidden: boolean;
+};
+
+export interface GameBoardProps {
+  gameBoardLayout: CellLayout[][];
+}
+
+const GameBoard = ({ gameBoardLayout }: GameBoardProps) => {
   return (
     <div>
-      <GameCell content="mine" />
-      <GameCell content="exploded-mine" />
-      <GameCell content="empty" />
-      <GameCell content="1" />
-      <GameCell content="2" />
-      <GameCell content="3" />
-      <GameCell content="4" />
-      <GameCell content="5" />
-      <GameCell content="6" />
-      <GameCell content="7" />
-      <GameCell content="8" />
-      <GameCell content="9" />
+      {gameBoardLayout.map((row: CellLayout[]) => (
+        <div className="flex flex-row">
+          {row.map((cell: CellLayout) => (
+            <GameCell content={cell.content} isHidden={cell.isHidden} />
+          ))}
+        </div>
+      ))}
     </div>
   );
 };

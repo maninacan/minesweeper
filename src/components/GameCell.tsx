@@ -6,21 +6,24 @@ const GameCellStyled = styled.div<{ isHidden?: boolean }>`
     isHidden ? "inset 0 0 5px 1px #000000" : "none"};
 `;
 
+export enum CellContentEnum {
+  MINE = "MINE",
+  EXPLODED_MINE = "EXPLODED_MINE",
+  EMPTY = "EMPTY",
+  ONE = 1,
+  TWO,
+  THREE,
+  FOUR,
+  FIVE,
+  SIX,
+  SEVEN,
+  EIGHT,
+  NINE,
+}
+
 export interface GameCellProps {
-  content:
-    | "mine"
-    | "exploded-mine"
-    | "empty"
-    | "1"
-    | "2"
-    | "3"
-    | "4"
-    | "5"
-    | "6"
-    | "7"
-    | "8"
-    | "9";
-  isHidden: boolean;
+  content: CellContentEnum;
+  isHidden?: boolean;
 }
 
 const GameCell = ({ content, isHidden }: GameCellProps) => {
