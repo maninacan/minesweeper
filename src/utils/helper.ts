@@ -133,6 +133,7 @@ export const generateGameBoardLayout = (
       new Array(gameSettings.width).fill(null).map(() => ({
         content: CellContentEnum.EMPTY,
         isHidden: true,
+        isFlagged: false
       }))
     );
 

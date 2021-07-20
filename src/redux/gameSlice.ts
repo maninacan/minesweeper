@@ -132,6 +132,38 @@ const revealNeighborsThatAreEmpty = (
   }
 };
 
+const getNumCells = (layout: CellLayout[][], type?: CellContentEnum) => {
+  if (!type) {
+    return layout.length * (layout.length ? layout[0].length : 1);
+  } else {
+    let count = 0;
+
+    layout.forEach((row) =>
+      row.forEach((cell) => {
+        if (cell.content === type) {
+          count++;
+        }
+      })
+    );
+
+    return count;
+  }
+};
+
+const getNumRevealedCells = (layout: CellLayout[][]) => {
+  let count = 0;
+
+  layout.forEach((row) =>
+    row.forEach((cell) => {
+      if (!cell.isHidden) {
+        count++;
+      }
+    })
+  );
+
+  return count;
+};
+
 export const gameSlice = createSlice({
   name: reducerName,
   // `createSlice` will infer the state type from the `initialState` argument
@@ -166,6 +198,11 @@ export const gameSlice = createSlice({
     revealNeighboringEmptyCells: (state, action) => {
       revealNeighborsThatAreEmpty(state, action.payload.currentCellCoordinates);
     },
+    changeFlagStatus: (state, action) => {
+      state[action.payload.row][action.payload.column].isFlagged =
+        action.payload.flagStatus;
+      return state;
+    },
   },
 });
 
@@ -174,11 +211,23 @@ export const {
   revealCell,
   revealAllMines,
   revealNeighboringEmptyCells,
+  changeFlagStatus,
 } = gameSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const select = (state: RootState) => state.game;
 export const selectIsHidden = (state: RootState, coords: CellCoordinates) =>
   select(state);
+export const selectNumLeftToClear = (state: RootState) => {
+  const layout = select(state);
+  return (
+    getNumCells(layout) -
+    getNumCells(layout, CellContentEnum.MINE) -
+    getNumRevealedCells(layout)
+  );
+};
+export const selectNumMines = (state: RootState) => {
+  return getNumCells(select(state), CellContentEnum.MINE);
+};
 
 export default gameSlice.reducer;
